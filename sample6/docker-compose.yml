@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  livereload:
+    image: modd-livereload
+    volumes:
+      - ./api:/data/api
+    command: sh -c "cd data/api && modd"

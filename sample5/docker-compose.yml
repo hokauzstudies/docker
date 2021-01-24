@@ -1,0 +1,26 @@
+version: '3.9'
+
+networks:
+  web:
+
+services:
+  web:
+    image: nginx:1.19.4
+    volumes:
+      # HelloWorld
+      - ./workspaces/web/helloworld:/data/www/helloworld/
+      # Configuração do proxy reverso
+      - ./workspaces/infra/nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    networks:
+      - web
+    depends_on:
+      - apis
+  apis:
+    image: golang:1.15.5
+    volumes:
+      - ./workspaces/apis/go-api:/backend
+    networks:
+      - web
+    command: bash -c "cd /backend && go build && ./go-api"
